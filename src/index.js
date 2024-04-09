@@ -11,11 +11,6 @@ fetch('https://json-server-zeyw.onrender.com/films')
     <button id="del" >delete</button>
     `
     titles.appendChild(mov)
-  
-      mov.querySelector('#del').addEventListener("click", () =>{
-        mov.remove()
-        
-       })
 
 })})
 
@@ -25,7 +20,7 @@ function showDetails(){
   .then(data => { 
     data.forEach(film => { 
       const buttn = document.getElementById(`${film.id}`)
-    buttn.addEventListener('click', e => {
+    buttn.addEventListener('click', () => {
                 
                 let cardd = document.querySelector('#showing') 
             let availTickets = `${film.capacity}`- `${film.tickets_sold}`
