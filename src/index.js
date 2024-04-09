@@ -8,10 +8,15 @@ fetch('https://json-server-zeyw.onrender.com/films')
     const mov = document.createElement('li')
     mov.innerHTML=`
     <button id ="${film.id}" onclick="showDetails()">${film.title}</button>
-    <button>delete</button>
+    <button id="del" >delete</button>
     `
     titles.appendChild(mov)
-   
+  
+      mov.querySelector('#del').addEventListener("click", () =>{
+        mov.remove()
+        
+       })
+
 })})
 
 function showDetails(){
