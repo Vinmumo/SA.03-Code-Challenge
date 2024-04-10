@@ -50,6 +50,7 @@ function showDetails(){
               </button>
             </div>
             `
+    
       const img = document.querySelector('#poster')
       img.src = `${film.poster}`
   })})})}
@@ -64,5 +65,18 @@ function availTickets(click){
   }else {
     span.textContent = "sold out"
   }
-  
+  updateTickets()
 }
+
+function updateTickets(film){
+  fetch(`https://json-server-zeyw.onrender.com/films/${film.id}`,{
+    method:"PATCH",
+    headers:{
+      "Content-type":"application/json"
+    },
+    body: JSON.stringify(film)
+    }
+    )
+    .then(res => res.json)
+    .then(data => console.log(data))
+  }
