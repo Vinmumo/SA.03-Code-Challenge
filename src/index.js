@@ -1,4 +1,14 @@
-fetch('https://json-server-zeyw.onrender.com/films')
+document.addEventListener('DOMContentLoaded',async(event)=>{
+  await getMovies()
+})
+function getMovies(){ 
+fetch('https://json-server-zeyw.onrender.com/films',{
+method:"GET",
+headers:{
+  "Content-type":"application/json"
+}
+}
+)
 .then(res => res.json())
 .then(data => { 
   data.forEach(film => { 
@@ -13,7 +23,7 @@ fetch('https://json-server-zeyw.onrender.com/films')
     titles.appendChild(mov)
 
 })})
-
+}
 function showDetails(){
   fetch('https://json-server-zeyw.onrender.com/films')
   .then(res => res.json())
