@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded',async(event)=>{
-  await getMovies()
+  getMovies()
+  showDetails()
 })
 function getMovies(){ 
 fetch('https://json-server-zeyw.onrender.com/films',{
 method:"GET",
 headers:{
-  "Content-type":"application/json"
+  "Content-type":"application/json",
+  "Accept":"application/json"
 }
 }
 )
@@ -25,47 +27,53 @@ headers:{
 })})
 }
 function showDetails(){
-  fetch('https://json-server-zeyw.onrender.com/films')
+  fetch('https://json-server-zeyw.onrender.com/films',{
+    method:"GET",
+    headers:{
+      "Content-type":"application/json",
+      "Accept":"application/json"
+    }
+    })
   .then(res => res.json())
-  .then(data => { 
-    data.forEach(film => { 
-      const buttn = document.getElementById(`${film.id}`)
-    buttn.addEventListener('click', () => {
-                
-                let cardd = document.querySelector('#showing') 
-            let availTickets = `${film.capacity}`- `${film.tickets_sold}`
-            cardd.innerHTML=`
-            <div class="card">
-            <div id="title" class="title">${film.title}</div>
-            <div id="runtime" class="meta">${film.runtime} minutes</div>
-            <div class="content">
-              <div class="description">
-                <div id="film-info">${film.description}</div>
-                <span id="showtime" class="ui label">${film.showtime}</span>
-                <span id="ticket-num">${availTickets}remaining tickets</span> 
-              </div>
-              <div class="extra content">
-              <button id="buy-ticket" class="ui orange button" onclick="availTickets(-1)">
-                Buy Ticket
-              </button>
+  .then(data => data.forEach(film => displayFilm(film)))
+  }
+function displayFilm(film){
+    document.getElementById(`${film.id}`).addEventListener('click', () => {
+              
+              let cardd = document.querySelector('#showing') 
+          let availTickets = `${film.capacity}`- `${film.tickets_sold}`
+          cardd.innerHTML=`
+          <div class="card">
+          <div id="title" class="title">${film.title}</div>
+          <div id="runtime" class="meta">${film.runtime} minutes</div>
+          <div class="content">
+            <div class="description">
+              <div id="film-info">${film.description}</div>
+              <span id="showtime" class="ui label">${film.showtime}</span>
+              <span id="ticket-num">${availTickets}remaining tickets</span> 
             </div>
-            `
-    
-      const img = document.querySelector('#poster')
-      img.src = `${film.poster}`
-  })})})}
-
-function availTickets(click){ 
-  const span = document.getElementById('ticket-num')
+            <div class="extra content">
+            <button id="buy-ticket" class="ui orange button">
+              Buy Ticket
+            </button>
+          </div>
+          `
+  
+    const img = document.querySelector('#poster')
+    img.src = `${film.poster}`
+   cardd.querySelector('#buy-ticket').addEventListener("click", () =>{  
+    const span = document.getElementById('ticket-num')
   const value = parseInt(span.innerHTML)
+  const click = -1
   span.innerHTML = value 
   
-  if(value > 1){
+   if(value > 1){
     span.innerHTML = value + click + 'remaining tickets'
   }else {
     span.textContent = "sold out"
   }
-  updateTickets()
+    updateTickets(film)})
+})
 }
 
 function updateTickets(film){
@@ -77,6 +85,6 @@ function updateTickets(film){
     body: JSON.stringify(film)
     }
     )
-    .then(res => res.json)
+    .then(res => res.json())
     .then(data => console.log(data))
   }
