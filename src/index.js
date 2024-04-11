@@ -24,6 +24,10 @@ headers:{
     `
     titles.appendChild(mov)
 
+mov.querySelector('#del').addEventListener('click', () => {
+  mov.innerHTML=''
+  delMov(`${film.id}`)
+})
 })})
 }
 function showDetails(){
@@ -61,6 +65,8 @@ function displayFilm(film){
   
     const img = document.querySelector('#poster')
     img.src = `${film.poster}`
+
+
    cardd.querySelector('#buy-ticket').addEventListener("click", () =>{  
     const span = document.getElementById('ticket-num')
   const value = parseInt(span.innerHTML)
@@ -74,6 +80,7 @@ function displayFilm(film){
   }
     updateTickets(film)})
 })
+
 }
 
 function updateTickets(film){
@@ -88,3 +95,16 @@ function updateTickets(film){
     .then(res => res.json())
     .then(data => console.log(data))
   }
+
+  function delMov(id){
+    fetch(`https://json-server-zeyw.onrender.com/films/${id}`,{
+    method:"DELETE",
+    headers:{
+      "Content-type":"application/json"
+    }
+    }
+    )
+    .then(res => res.json())
+    .then(data => console.log(data))
+  }
+  
